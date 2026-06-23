@@ -6,4 +6,7 @@ export interface DailyStatsResponse {
   dailyCalorieLimit: number;
   remainingCalories: number;
   entries: FoodEntryResponse[];
+  totalProtein: number;
+  totalFat: number;
+  totalCarbohydrates: number
 }

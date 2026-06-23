@@ -16,8 +16,8 @@ export default function MainNavbar() {
 
       <div className="nav-right">
         <Link to="/daily-stats" className="nav-link">Daily</Link>
-        <Link to="/week-stats" className="nav-link">Weekly</Link>
-        <Link to="/month-stats" className="nav-link">Monthly</Link>
+        <Link to="/weekly-stats" className="nav-link">Weekly</Link>
+        <Link to="/monthly-stats" className="nav-link">Monthly</Link>
         <Link to="/food-entries" className="nav-link">Entries</Link>
         <Link to="/goals" className="nav-link">Goals</Link>
 

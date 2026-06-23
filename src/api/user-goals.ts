@@ -10,6 +10,6 @@ export async function getUserGoals(): Promise<UserGoalsResponse> {
 export async function setUserGoals(
   data: SetUserGoalsRequest
 ): Promise<UserGoalsResponse> {
-  const res = await axiosClient.put<UserGoalsResponse>("/user-goals", data);
+  const res = await axiosClient.post<UserGoalsResponse>("/user-goals", data);
   return res.data;
 }
