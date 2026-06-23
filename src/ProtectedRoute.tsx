@@ -1,14 +1,17 @@
+import type { ReactElement } from "react";
 import { Navigate } from "react-router-dom";
 
-export function ProtectedRoute({ children }: { children: JSX.Element }) {
+export function ProtectedRoute({ children }: { children: ReactElement }) {
   const token = localStorage.getItem("token");
-  const exp = Number(localStorage.getItem("token_exp"));
 
-  if (!token || Date.now() >= exp * 1000) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("token_exp");
+  if (!token) return <Navigate to="/login" replace />;
 
-      return <Navigate to="/login" replace />;
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  const exp = payload.exp;
+
+  if (Date.now() >= exp * 1000) {
+    localStorage.removeItem("token");
+    return <Navigate to="/login" replace />;
   }
 
   return children;

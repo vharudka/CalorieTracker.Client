@@ -1,19 +1,20 @@
 import { useState } from "react";
-import { login } from "../api/auths";
-import type { LoginRequest } from "../models/auths/LoginRequest";
+import { createFoodEntry } from "../api/food-entries"; 
+import type { CreateFoodEntryRequest } from "../models/food-entries/CreateFoodEntryRequest";
 import { useNavigate } from "react-router-dom";
-import AuthNavbar from "../components/AuthNavbar";
+import MainNavbar from "../components/MainNavbar";
 
-export default function Login() {
+export default function CreateFoodEntry() {
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    username: "",
-    password: "",
+  const [form, setForm] = useState<CreateFoodEntryRequest>({
+    barcode: "123456789",
+    grams: 150,
+    eatenAt: "2026-01-01T12:30",
   });
 
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -23,20 +24,12 @@ export default function Login() {
     e.preventDefault();
     setError(null);
 
-    const payload: LoginRequest = {
-      username: form.username,
-      password: form.password,
-    };
-
     try {
       setLoading(true);
-      const res = await login(payload);
-
-      localStorage.setItem("token", res.token);
-
+      await createFoodEntry(form);
       navigate("/food-entries");
     } catch (err: any) {
-      setError("Invalid username or password");
+      setError("Failed to create food entry");
     } finally {
       setLoading(false);
     }
@@ -44,32 +37,41 @@ export default function Login() {
 
   return (
     <>
-      <AuthNavbar />
+      <MainNavbar />
 
       <div className="container">
-        <div className="card auth-card">
-          <h1>Login</h1>
+        <div className="card">
+          <h1>Create Food Entry</h1>
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Username</label>
+              <label>Barcode</label>
               <input
-                name="username"
+                name="barcode"
                 type="text"
-                placeholder="yourusername"
-                value={form.username}
+                value={form.barcode}
                 onChange={handleChange}
                 required
               />
             </div>
 
             <div className="form-group">
-              <label>Password</label>
+              <label>Grams</label>
               <input
-                name="password"
-                type="password"
-                placeholder="••••••••"
-                value={form.password}
+                name="grams"
+                type="number"
+                value={form.grams}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Eaten At</label>
+              <input
+                name="eatenAt"
+                type="datetime-local"
+                value={form.eatenAt}
                 onChange={handleChange}
                 required
               />
@@ -78,13 +80,9 @@ export default function Login() {
             {error && <p className="error-text">{error}</p>}
 
             <button className="btn btn-primary" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Saving..." : "Save Changes"}
             </button>
           </form>
-
-          <p className="auth-switch">
-            Don't have an account? <a href="/register">Register</a>
-          </p>
         </div>
       </div>
     </>
