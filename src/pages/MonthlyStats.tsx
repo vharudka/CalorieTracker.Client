@@ -83,7 +83,7 @@ export default function MonthlyStats() {
               sub:
                 stats.remainingCalories > 0
                   ? "Great consistency this month"
-                  : "You've exceeded your daily limit",
+                  : "You've exceeded your average daily calorie target",
               highlight: true,
             },
           ]}

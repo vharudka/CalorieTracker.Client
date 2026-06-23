@@ -92,7 +92,7 @@ export default function WeeklyStats() {
               sub:
                 stats.remainingCalories > 0
                   ? "Great consistency this week"
-                  : "You've exceeded your daily limit",
+                  : "You've exceeded your average daily calorie target",
               highlight: true,
             }
           ]}
